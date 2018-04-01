@@ -2,7 +2,7 @@
 # Main Site
 #----
 locals {
-  site_main_origin_id     = "S3-Bucket+${aws_s3_bucket.site.bucket}"
+  site_origin_id     = "S3-Bucket+${aws_s3_bucket.site.bucket}"
   site_redirect_origin_id = "S3-Website+${aws_s3_bucket.site_redirect.website_endpoint}"
 }
 
@@ -24,7 +24,7 @@ resource "aws_cloudfront_distribution" "site" {
   }
 
   origin {
-    origin_id                = "${local.site_main_origin_id}"
+    origin_id                = "${local.site_origin_id}"
     domain_name              = "${aws_s3_bucket.site.bucket_domain_name}"
     s3_origin_config         = {
       origin_access_identity = "${aws_cloudfront_origin_access_identity.site.cloudfront_access_identity_path}"
@@ -33,7 +33,7 @@ resource "aws_cloudfront_distribution" "site" {
 
 
   default_cache_behavior {
-    target_origin_id       = "${local.site_main_origin_id}"
+    target_origin_id       = "${local.site_origin_id}"
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = [ "GET", "HEAD" ]
     cached_methods         = [ "GET", "HEAD" ]
