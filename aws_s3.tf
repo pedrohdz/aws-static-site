@@ -5,28 +5,26 @@ resource "aws_s3_bucket" "site" {
   bucket           = "${var.site}"
   acl              = "private"
   force_destroy    = "false"
+  website          = {
+    index_document = "index.html"
+  }
+
   logging          = {
     target_bucket  = "${var.logging_bucket}"
     target_prefix  = "${var.site_logging_prefix}"
   }
 }
 
-resource "aws_cloudfront_origin_access_identity" "site" {
-  comment = "${var.site} CloudFront origin access"
-}
-
 data "aws_iam_policy_document" "site" {
   statement {
-    sid           = "CloudFront origin access"
+    sid           = "Public read access"
     effect        = "Allow"
     actions       = [ "s3:GetObject" ]
     resources     = [ "${aws_s3_bucket.site.arn}/*" ]
 
     principals {
       type        = "AWS"
-      identifiers = [
-          "${aws_cloudfront_origin_access_identity.site.iam_arn}"
-      ]
+      identifiers = [ "*" ]
     }
   }
 }
