@@ -16,18 +16,6 @@ variable "domain_redirect_dns_zones" {
   default     = []
 }
 
-variable "logging_bucket" {
-  description = "S3 bucket to log S3 and CloudFront activity to."
-}
-
-variable "site_logging_prefix" {
-  description = "S3 prefix to store S3 access logs to."
-}
-
-variable "cloudfront_logging_prefix" {
-  description = "S3 prefix to store CloudFront access logs to."
-}
-
 variable "cache_default_ttl" {
   description = "Default CloudFront TTL."
 }

@@ -6,10 +6,6 @@ locals {
   site_redirect_origin_id = "S3-Website+${aws_s3_bucket.site_redirect.website_endpoint}"
 }
 
-data "aws_s3_bucket" "logging_bucket" {
-  bucket = "${var.logging_bucket}"
-}
-
 resource "aws_cloudfront_distribution" "site" {
   depends_on          = [ "aws_acm_certificate_validation.cert_validation" ]
   enabled             = true
@@ -52,12 +48,6 @@ resource "aws_cloudfront_distribution" "site" {
   custom_error_response {
     error_caching_min_ttl = "${var.cache_404_ttl}"
     error_code            = "404"
-  }
-
-  logging_config {
-    bucket          = "${data.aws_s3_bucket.logging_bucket.bucket_domain_name}"
-    include_cookies = "false"
-    prefix          = "${var.cloudfront_logging_prefix}"
   }
 
   viewer_certificate {

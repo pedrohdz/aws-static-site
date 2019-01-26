@@ -8,11 +8,6 @@ resource "aws_s3_bucket" "site" {
   website          = {
     index_document = "index.html"
   }
-
-  logging          = {
-    target_bucket  = "${var.logging_bucket}"
-    target_prefix  = "${var.site_logging_prefix}"
-  }
 }
 
 data "aws_iam_policy_document" "site" {
